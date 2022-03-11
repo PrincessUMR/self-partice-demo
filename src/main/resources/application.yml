@@ -1,0 +1,25 @@
+
+server:
+  port: 889
+spring:
+  datasource:
+    write:
+      jdbcUrl: jdbc:ArteryBase:// /postgres?Charset=utf8
+      username:
+      password:
+      driver-class-name: com.thunisoft.ArteryBase.Driver
+      hikari:
+        connection-test-query: select 1
+    read:
+      jdbcUrl: jdbc:ArteryBase:// /postgres?Charset=utf8
+      username:
+      password:
+      driver-class-name: com.thunisoft.ArteryBase.Driver
+      hikari:
+        connection-test-query: select 1
+
+env:
+  javaHome: ${JAVA_HOME}
+excel:
+  tool:
+    directory: D:\\DeskTop\\hubei_demo

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.RepositoryMapper" >
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.RepositoryInfo" >
+        <id column="repId" property="repId" jdbcType="INTEGER" />
+        <result column="repName" property="repName" jdbcType="VARCHAR" />
+        <result column="repLocation" property="repLocation" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="queryRepStockMap" type="com.example.demo.entity.RepositoryInfo" extends="BaseResultMap">
+        <collection property="tarRepStocks" ofType="com.example.demo.entity.TarRepStock" javaType="java.util.List">
+            <result column="stock" property="stock" jdbcType="INTEGER"></result>
+            <association property="target" javaType="com.example.demo.entity.Target">
+                <id column="targetId" property="targetId" jdbcType="INTEGER" />
+                <result column="targetName" property="name" jdbcType="VARCHAR" />
+            </association>
+            <association property="repositoryInfo" javaType="com.example.demo.entity.RepositoryInfo">
+                <id column="repId" property="targetId" jdbcType="INTEGER" />
+                <result column="targetName" property="name" jdbcType="VARCHAR" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="queryRepStock" resultMap="queryRepStockMap" >
+        SELECT
+               r.repid,r.repname,r.replocation,stock,targetid,targetname
+        FROM
+            "pgModel".repositoryinfo r
+        left join
+            "pgModel".tar_rep_stock  trs
+        on
+            r.repid = trs.repid and r.repid is not null
+        left join
+            "pgModel".target ta
+        on
+            trs.tarid = ta.targetid
+    </select>
+    <select id="queryRepById" resultMap="BaseResultMap" >
+        select * from "pgModel".repositoryinfo where repid = #{id}
+    </select>
+</mapper>

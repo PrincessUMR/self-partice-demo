@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TargetMapper" >
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Target" >
+        <id column="targetId" property="targetId" jdbcType="INTEGER" />
+        <result column="targetName" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="ExResultMap" type="com.example.demo.entity.Target" extends="BaseResultMap">
+        <collection property="tarRepStock" ofType="java.util.List" javaType="com.example.demo.entity.TarRepStock" ></collection>
+    </resultMap>
+    <select id="queryAll" resultMap="BaseResultMap" >
+        select * from "pgModel".target limit 50 offset 0
+    </select>
+    <select id="queryByTarId" resultMap="BaseResultMap">
+        select * from "pgModel".target where targetid = #{id}
+    </select>
+</mapper>

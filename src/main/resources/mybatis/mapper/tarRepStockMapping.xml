@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TarRepStockMapper" >
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.RepositoryInfo" >
+        <result column="tarId" property="tarId" jdbcType="INTEGER"/>
+        <result column="repId" property="repId" jdbcType="INTEGER"/>
+        <result column="stock" property="stock" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="targetMap" type="com.example.demo.entity.TarRepStock">
+        <result column="repId" property="repId" jdbcType="INTEGER" />
+        <association property="target" javaType="com.example.demo.entity.Target">
+            <id column="targetId" property="targetId" jdbcType="INTEGER" />
+            <result column="targetName" property="name" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+    <resultMap id="queryAllMap" type="com.example.demo.entity.TarRepStock">
+        <result column="stock" property="stock" jdbcType="INTEGER"/>
+        <association property="target" javaType="com.example.demo.entity.Target" column="tarId" select="com.example.demo.mapper.TargetMapper.queryByTarId">
+        </association>
+        <association property="repositoryInfo" javaType="com.example.demo.entity.RepositoryInfo" column="repId" select="com.example.demo.mapper.RepositoryMapper.queryRepById">
+        </association>
+    </resultMap>
+    <select id="queryAllTarget" resultMap="targetMap">
+        select * from "pgModel".tar_rep_stock trs left join "pgModel".target tar on trs.tarId = tar.targetid
+    </select>
+    <select id="queryAll" resultMap="queryAllMap">
+        select * from "pgModel".tar_rep_stock
+    </select>
+</mapper>
